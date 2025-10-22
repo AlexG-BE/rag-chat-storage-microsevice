@@ -1,0 +1,66 @@
+services:
+
+  chat-storage-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: chat-storage-api
+    container_name: chat-storage-api
+    command:
+      - --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal-network
+    env_file:
+      - .env
+
+  db:
+    image: postgres:18-alpine
+    container_name: chat-storage-db
+    shm_size: 1G
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: chat_storage_db
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d pass" ]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 50
+    networks:
+      - internal-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: pass
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  internal-network:
+    driver: bridge
+    name: "internal-network"

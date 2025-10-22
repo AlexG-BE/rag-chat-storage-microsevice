@@ -1,0 +1,89 @@
+[project]
+name = "rag-chat-storage-microsevice"
+version = "0.1.0"
+description = "RAG Chat Storage Microservice"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "alembic==1.17.0",
+    "asyncpg==0.30.0",
+    "fastapi==0.119.1",
+    "fastapi-pagination==0.14.3",
+    "httpx==0.28.1",
+    "pydantic==2.12.3",
+    "pydantic-settings==2.11.0",
+    "sqlalchemy[asyncio]==2.0.44",
+    "structlog==25.4.0",
+    "uvicorn[standard]==0.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit==4.3.0",
+    "pytest==8.4.2",
+    "pytest-asyncio==1.2.0",
+    "ruff==0.14.1",
+    "deptry==0.23.1",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::FutureWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::RuntimeWarning"
+]
+pythonpath = ["app"]
+testpaths = "tests"
+
+[tool.ruff]
+extend-exclude = []
+line-length = 120
+target-version = "py313"
+lint.select = [
+    "E", # Enable error codes checks
+    "F", # Enable checks for source files errors
+    "W", # Enable linter warnings
+    "I", # Enable Isort related checks
+    "N", # Enable pep8-naming conventions
+    "RSE", # Enable `unnecessary parentheses on raised exception` check
+    "RET", # Enable `return` checks
+    "T20", # Enable `print found` checks
+    "PIE", # Enable `specific` checks: https://docs.astral.sh/ruff/rules/#flake8-pyi-pyi
+    "FAST", # Enable `fastapi` checks
+    "RUF", # Enable `ruff` checks
+    "ASYNC", # Enable `async` checks
+    "Q", # Enable `quotes` checks
+    "SIM", # Enable `simplify` checks
+    "PL", # Enable `pylint` checks
+]
+lint.ignore = [
+    "N805",
+    "PLW2901",
+    "RUF012",
+    "PLR2004",
+    "PLR0913",
+    "PLR0915",
+    "PLC0415",
+]
+format.quote-style = "double"
+
+[tool.ruff.lint.per-file-ignores]
+"migrations/versions/*.py" = ["PLR0912"]
+
+[tool.mypy]
+check_untyped_defs = true
+disable_error_code = [
+  "assignment",
+]
+files = ["app"]
+follow_imports = "skip"
+python_version = 3.13
+
+[tool.deptry]
+ignore = ["DEP003", "DEP002"]
+
+[tool.deptry.per_rule_ignores]
+DEP002 = ["pydantic"]
