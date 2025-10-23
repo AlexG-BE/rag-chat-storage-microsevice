@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from logging.config import fileConfig
 
@@ -7,12 +8,17 @@ from alembic.operations import ops
 from sqlalchemy import Connection, engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from app.core.config import config as env_config
+from app.core.models import Base
+from app.models import *  # noqa
+
 config = context.config
+config.set_main_option("sqlalchemy.url", env_config.db.pg_dsn)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = None  # TODO
+target_metadata = Base.metadata
 
 logger = logging.getLogger("alembic")
 
@@ -90,4 +96,4 @@ async def run_migrations_online() -> None:
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    run_migrations_online()
+    asyncio.run(run_migrations_online())
