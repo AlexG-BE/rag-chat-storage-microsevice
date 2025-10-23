@@ -6,9 +6,7 @@ from app.core.config import config
 
 
 def add_routes(app: FastAPI, *, prefix=config.base_prefix) -> FastAPI:
-    root_router = APIRouter(
-        dependencies=[Depends(HTTPBearer(auto_error=False, description="JWT Token"))],
-    )
+    root_router = APIRouter(dependencies=[Depends(HTTPBearer(auto_error=False, description="API Key"))])
 
     root_router.include_router(healthcheck.router)
     root_router.include_router(chat_session.router)

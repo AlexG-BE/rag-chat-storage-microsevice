@@ -49,15 +49,12 @@ class Settings(BaseSettings):
     uvicorn_host: str = "0.0.0.0"
     uvicorn_port: int = 8000
 
-    @computed_field  # type: ignore[prop-decorator]
-    @property
-    def environment(self) -> AppEnvEnum:
-        return AppEnvEnum(self.env_name.lower())
+    limiter_limit: str = "1/second"
 
     @computed_field  # type: ignore[prop-decorator]
     @property
     def internal_env(self) -> bool:
-        return self.environment in {AppEnvEnum.LOCAL, AppEnvEnum.DEV, AppEnvEnum.TEST}
+        return self.env_name in {AppEnvEnum.LOCAL, AppEnvEnum.DEV, AppEnvEnum.TEST}
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -82,6 +79,8 @@ class Settings(BaseSettings):
 
 
 class TestSettings(Settings):
+    limiter_limit: str = ""  # unlimited
+
     # Test are hardcoded to use api as base_url.
     # This is to avoid having to change the base_url in every test
     @field_validator("base_prefix")
