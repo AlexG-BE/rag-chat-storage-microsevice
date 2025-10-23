@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.security import HTTPBearer
 
-from app.api import healthcheck
+from app.api import chat_session, healthcheck
 from app.core.config import config
 
 
@@ -11,6 +11,7 @@ def add_routes(app: FastAPI, *, prefix=config.base_prefix) -> FastAPI:
     )
 
     root_router.include_router(healthcheck.router)
+    root_router.include_router(chat_session.router)
 
     app.include_router(root_router, prefix=prefix)
 

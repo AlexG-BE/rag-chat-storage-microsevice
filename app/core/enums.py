@@ -3,6 +3,8 @@ from enum import StrEnum
 
 class ApiTagEnum(StrEnum):
     HEALTH_CHECK = "Health Check"
+    CHAT_SESSION = "Chat Session"
+    CHAT_MESSAGES = "Chat Message"
 
 
 class AppEnvEnum(StrEnum):
@@ -15,6 +17,11 @@ class AppEnvEnum(StrEnum):
     STAGE = "STAGE"
     PROD = "PROD"
     TEST = "TEST"
+
+
+class SenderTypeEnum(StrEnum):
+    USER = "USER"
+    AI = "AI"
 
 
 class PGErrorCodeEnum(StrEnum):
