@@ -22,8 +22,10 @@ dev = [
     "pre-commit==4.3.0",
     "pytest==8.4.2",
     "pytest-asyncio==1.2.0",
+    "pytest-env==1.2.0",
     "ruff==0.14.1",
     "deptry==0.23.1",
+    "factory-boy==3.3.3",
 ]
 
 [tool.pytest.ini_options]
@@ -38,6 +40,10 @@ filterwarnings = [
 ]
 pythonpath = ["app"]
 testpaths = "tests"
+env = [
+  "D:ENV_NAME=TEST",
+  "D:DB_NAME=chat_storage_db_test",
+]
 
 [tool.ruff]
 extend-exclude = []
