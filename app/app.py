@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi_pagination import add_pagination
 from fastapi_pagination.utils import disable_installed_extensions_check
@@ -7,6 +7,7 @@ from slowapi.util import get_remote_address
 
 from app.api import add_routes
 from app.core.config import config
+from app.core.dependencies.auth import get_api_key
 from app.core.exceptions import exception_handlers
 from app.core.middlewares import add_middlewares
 
@@ -25,6 +26,7 @@ def create_app() -> FastAPI:
         redoc_url=config.redoc_url,
         docs_url=config.swagger_url,
         exception_handlers=exception_handlers,
+        dependencies=[Depends(get_api_key)],
     )
 
     app_instance.state.limiter = limiter

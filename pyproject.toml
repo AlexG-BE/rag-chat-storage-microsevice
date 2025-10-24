@@ -42,6 +42,7 @@ pythonpath = ["app"]
 testpaths = "tests"
 env = [
   "D:ENV_NAME=TEST",
+  "D:API_KEY=test",
   "D:DB_NAME=chat_storage_db_test",
 ]
 

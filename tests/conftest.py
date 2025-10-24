@@ -1,6 +1,7 @@
 from typing import AsyncGenerator
 
 import pytest
+from faker import Faker
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import text
@@ -82,3 +83,13 @@ async def client(
         ) as client,
     ):
         yield client
+
+
+@pytest.fixture(scope="session")
+async def api_key_headers() -> dict[str, str]:
+    return {"X-API-KEY": config.API_KEY}
+
+
+@pytest.fixture(scope="session")
+async def wrong_api_key_headers(_session_faker: Faker) -> dict[str, str]:
+    return {"X-API-KEY": _session_faker.pystr()}

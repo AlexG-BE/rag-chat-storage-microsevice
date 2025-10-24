@@ -35,6 +35,8 @@ class DBSettings(BaseSettings):
 class Settings(BaseSettings):
     db: DBSettings = DBSettings()
 
+    API_KEY: str
+
     # CORS SETTINGS
     base_prefix: Annotated[str, Field(validate_default=True)] = "/api"
     env_name: AppEnvEnum = AppEnvEnum.PROD
