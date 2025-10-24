@@ -12,7 +12,7 @@ from app.core.dependencies import get_db_session
 from app.core.enums import AppEnvEnum
 from app.core.models import Base
 
-pytest_plugins = ["tests.fixtures"]
+pytest_plugins = ["tests.fixtures", "tests.unit.fixtures"]
 
 
 @pytest.fixture(scope="session", autouse=True)
